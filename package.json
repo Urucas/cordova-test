@@ -4,7 +4,10 @@
   "description": "command-line tool to automate Cordova Appium tests suite ",
   "main": "node/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make clean && make node",
+    "prestart": "npm run build",
+    "start" : "./bin/index"
   },
   "repository": {
     "type": "git",
@@ -25,6 +28,10 @@
   },
   "homepage": "https://github.com/Urucas/cordova-test",
   "dependencies": {
+    "appium-running": "^0.1.3",
+    "finf": "0.0.1",
+    "jsonfile": "^2.2.1",
+    "optimist": "^0.6.1"
   },
   "devDependencies": {
     "babel": "^5.6.23"
