@@ -18,6 +18,4 @@ if(argv.help) {
   return;
 }
 
-console.log(argv);
 var pr = require('../node')().run(argv.platform, argv.tests); 
-console.log(pr);

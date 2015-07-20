@@ -1,5 +1,5 @@
 {
-  browserName:'Chrome',
-  deviceName:'Android',
-  platformName: 'Android'
+  "browserName":"Chrome",
+  "deviceName":"Android",
+  "platformName": "Android"
 }
