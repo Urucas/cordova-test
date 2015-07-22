@@ -1,25 +1,35 @@
 #!/bin/bash
+
+echo_fail()
+{
+  echo -e "\033[31m${1}";
+}
+
+echo_ok()
+{
+  echo -e "\033[32m✓ \033[0m${1}";
+}
+
 PLATFORM=$1
 PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 
 # help
 if [ "${PLATFORM}" == help ]; 
 then
-  echo "Usage cordova-test [platform] [appium_tests_full_path]"
+  echo_fail "Usage cordova-test [platform] [appium_tests_full_path]"
   exit 0
 fi
 
 # check tests directory exists
-echo "Checking tests directory exists"
 TEST_PATH=$"${PWD}/$2"
 if [ ! -d "$TEST_PATH" ];
 then
-  echo "Tests directory not found; $TEST_PATH"
+  echo_fail "Tests directory not found; $TEST_PATH"
   exit 1
 fi
+echo_ok "Checking tests directory exists"
 
 #check platforms
-echo "Checking selected platform is supported"
 SUPPORTED_PLATFORM[0]=android
 # SUPPORTED_PLATFORM[1]=ios
 IS_SUPPORTED=0
@@ -32,22 +42,24 @@ for i in "${!SUPPORTED_PLATFORM[@]}"; do
 done
 
 if [ $IS_SUPPORTED -eq 0 ]; then
-  echo "Platform not supported; $PLATFORM"
+  echo_fail "Platform not supported; $PLATFORM"
   exit 1
 fi
+echo_ok "Checking selected platform is supported"
 
 # check appum is running
-echo "Checking appium is running"
 IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
 if [ -z $IS_RUNNING ];
 then
-  echo "Appium is not running or available, run appium &"
+  echo_fail "Appium is not running or available, run appium &"
   exit 0;
 fi
+echo_ok "Checking appium is running"
 
 # compile cordova app
 echo "Compiling cordova application, this could take a while!"
 cordova prepare $PLATFORM && cordova prepare $PLATFORM
+echo_ok "Cordova app compiled"
 
 # getting platform app path
 echo "Getting compiled application path"
@@ -58,17 +70,16 @@ then
 fi
 
 # Check compiled application exists
-echo "Checking compiled application exists"
 if [ ! -f $APP_PATH ];
 then
-  echo "Compiled application not found; $APP_PATH"
+  echo_fail "Compiled application not found; $APP_PATH"
   exit 1
 fi
+echo_ok "Checking compiled application exists"
 
 # Run test sequentialy
 for entry in "$TEST_PATH"/*.js
 do
-  TEST=$(mocha $entry --platform $PLATFORM)
-  echo $TEST
+  echo "Running $entry test"
+  mocha $entry --platform $PLATFORM
 done
-
