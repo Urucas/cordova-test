@@ -21,6 +21,8 @@ cordova platform add android
 We create two appium tests, the [first one](https://github.com/Urucas/cordova-test/blob/master/example/tests/1_index_test.js) will check that some elements on the [index.html](https://github.com/Urucas/cordova-test/blob/master/example/www/index.html) are displayed, and the [second tests](https://github.com/Urucas/cordova-test/blob/master/example/tests/2_button_test.js) will click on a button and check a text is changed.
 
 Now, in the cordova project folder we run ```cordova-test android tests/``` and wait for the tests result.
+
+
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen.png">
 
 #Requirements
