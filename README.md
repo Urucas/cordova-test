@@ -23,6 +23,7 @@ Looking at [index.html](https://github.com/Urucas/cordova-test/blob/master/examp
 
 In the cordova project folder we run ```cordova-test android tests/``` and wait for the tests result.
 
+<img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen.png">
 
 #Requirements
 * [appium](https://github.com/appium/appium)
