@@ -32,7 +32,7 @@ for i in "${!SUPPORTED_PLATFORM[@]}"; do
 done
 
 if [ $IS_SUPPORTED -eq 0 ]; then
-  echo "Pkatform not supported; $PLATFORM"
+  echo "Platform not supported; $PLATFORM"
   exit 1
 fi
 
@@ -41,14 +41,13 @@ echo "Checking appium is running"
 IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
 if [ -z $IS_RUNNING ];
 then
-  echo "Appium is not running, please run appium &"
+  echo "Appium is not running or available, run appium &"
   exit 0;
 fi
 
 # compile cordova app
 echo "Compiling cordova application, this could take a while!"
-# cordova prepare $PLATFORM && cordova prepare $PLATFORM
-
+cordova prepare $PLATFORM && cordova prepare $PLATFORM
 
 # getting platform app path
 echo "Getting compiled application path"
@@ -69,7 +68,7 @@ fi
 # Run test sequentialy
 for entry in "$TEST_PATH"/*.js
 do
-  TEST=$(node $entry --platform $PLATFORM)
+  TEST=$(mocha $entry --platform $PLATFORM)
   echo $TEST
 done
 

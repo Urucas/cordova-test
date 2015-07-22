@@ -1,10 +1,10 @@
 {
   "name": "cordova-test",
   "version": "0.0.1",
-  "description": "command-line tool to automate Cordova Appium tests suite ",
-  "main": "test.sh",
-  "scripts": {
-    "start" : "test.sh"
+  "description": "command-line tool to automate Cordova Appium tests suite",
+  "preferGlobal": true,
+  "bin": {
+    "cordova-test": "./test.sh"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,5 @@
   "bugs": {
     "url": "https://github.com/Urucas/cordova-test/issues"
   },
-  "homepage": "https://github.com/Urucas/cordova-test",
+  "homepage": "https://github.com/Urucas/cordova-test"
 }
