@@ -96,7 +96,7 @@ then
 fi
 echo_ok "Checking compiled application exists"
 
-# Run test sequentialy
+# Run test sequentially
 for entry in "$TEST_PATH"/*.js
 do
   echo "Running $entry test"
