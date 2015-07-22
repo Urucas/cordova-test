@@ -69,8 +69,8 @@ done
 
 if [ $NO_COMPILE -eq 1 ];
 then
-  echo "Compiling cordova application, this could take a while!"
-  cordova build $PLATFORM
+  echo "Compiling cordova application, this may take a while!"
+  COMPILE=$(cordova build $PLATFORM)
   echo_ok "Cordova app compiled"
 fi
 
