@@ -13,16 +13,14 @@ cordova-test <platform> <relative_path_to_appium_tests> [--no-compile]
 ```
 
 #Example
-As an example to use ```cordova-test```, we create a simple ```Hello World``` app with cordova.
+As an example to use ```cordova-test```, we create a simple ```Hello World``` app with cordova, and add some elements to the [index.html](https://github.com/Urucas/cordova-test/blob/master/example/www/index.html).
 ```bash
 cordova create example com.urucas.testexample TestExample
 cordova platform add android
 ```
+We create two appium tests, the [first one](https://github.com/Urucas/cordova-test/blob/master/example/tests/1_index_test.js) will check that some elements on the [index.html](https://github.com/Urucas/cordova-test/blob/master/example/www/index.html) are displayed, and the [second tests](https://github.com/Urucas/cordova-test/blob/master/example/tests/2_button_test.js) will click on a button and check a text is changed.
 
-Looking at [index.html](https://github.com/Urucas/cordova-test/blob/master/example/www/index.html), we create an appium test that will check that an ```<h1>``` and a ```Hello World``` is present on our app. Check the test code [here](https://github.com/Urucas/cordova-test/blob/master/example/tests/appium_test.js)
-
-In the cordova project folder we run ```cordova-test android tests/``` and wait for the tests result.
-
+Now, in the cordova project folder we run ```cordova-test android tests/``` and wait for the tests result.
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen.png">
 
 #Requirements
