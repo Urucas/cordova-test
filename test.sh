@@ -10,13 +10,6 @@ echo_ok()
   echo -e "\033[32m✓ \033[0m${1}";
 }
 
-compile()
-{
-  echo "Compiling cordova application, this could take a while!"
-  cordova prepare $1 && cordova prepare $1
-  echo_ok "Cordova app compiled"
-}
-
 PLATFORM=$1
 PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 
@@ -63,7 +56,6 @@ then
 fi
 echo_ok "Checking appium is running"
 
-
 # compile cordova app
 NO_COMPILE=1
 for i in "$@"
@@ -77,7 +69,9 @@ done
 
 if [ $NO_COMPILE -eq 1 ];
 then
-  compile $PLATFORM
+  echo "Compiling cordova application, this could take a while!"
+  cordova build $PLATFORM
+  echo_ok "Cordova app compiled"
 fi
 
 # getting platform app path
