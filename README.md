@@ -12,6 +12,9 @@ Inside your cordova application folder
 cordova-test <platform> <relative_path_to_appium_tests> [--no-compile]
 ```
 
+#Example
+
+
 #Requirements
-* appium
-* mocha
+* [appium](https://github.com/appium/appium)
+* [mocha](https://github.com/mochajs/mocha)
