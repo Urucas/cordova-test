@@ -174,7 +174,6 @@ else
   if [ $PLATFORM = 'android' ];
   then
     REPLACE=$(sed -e 's|"app":"[\:A-Z\/a-z\.0-9\-]*"|"app":"'$APP_PATH'"|g' $CAPS_PATH)
-    echo $REPLACE
     echo_ok "$PLATFORM platform capabilities app value updated"
     echo -e $REPLACE > "$CAPS_PATH"
   fi
