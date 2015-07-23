@@ -37,5 +37,6 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen-sauce.png">
 
 #Requirements
+* [cordova](https://cordova.apache.org/)
 * [appium](https://github.com/appium/appium)
 * [mocha](https://github.com/mochajs/mocha)
