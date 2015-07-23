@@ -26,7 +26,15 @@ Now, in the cordova project folder we run ```cordova-test android tests/``` and 
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen.png">
 
 #Integrate with Sauce Labs
+Set your [Sauce Labs](https://saucelabs.com/) user and access key to run the tests suite in Sauce Labs mobile devices.
 
+For ex. 
+```bash
+$ cordova-test android tests--sauce SAUCE_USER SAUCE_ACCESSKEY
+```
+Before running the tests, ```cordova-test``` will upload the compiled app to Sauce Labs Storage, and update the platform capabilities. And then run every test remotely. 
+
+**NOT WORKING - Got an error on Sauce Labs when trying to launch the compiled app. Asking Sauce Labs guys**
 
 #Requirements
 * [appium](https://github.com/appium/appium)
