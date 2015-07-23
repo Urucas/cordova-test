@@ -114,7 +114,7 @@ then
   if [ ! -f $LOCAL_WD ];
   then
     echo '{"host":"localhost", "port":"4723"}' > "$LOCAL_WD"
-    echo_ok "Creating local weddriver capabilities for the first time"
+    echo_ok "Creating local wed driver capabilities for the first time"
   fi
 else
   #check sauce labs params and create web driver capabilities
@@ -140,6 +140,7 @@ else
   
   SAUCE_CAPS="$TESTS_PATH/sauce.json"
   echo -e "{\"host\":\"ondemand.saucelabs.com\",\"port\":\"80\",\"username\":\""$SAUCE_USER"\",\"accessKey\":\""$SAUCE_KEY"\"}" > "$SAUCE_CAPS"
+  echo_ok "Creating sauce labs web driver capabilities"
 
   #upload temp APK to sauce labs
   echo "Uploading $PLATFORM app to sauce labs"
