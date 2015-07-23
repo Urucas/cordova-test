@@ -1,5 +1,5 @@
 # cordova-test
-command-line tool to automate Cordova Appium tests suite
+cli-tool to automate Appium tests suite for Cordova apps
 
 #Install
 ```bash
