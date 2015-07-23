@@ -14,10 +14,10 @@ PLATFORM=$1
 PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 
 # help
-if [ "${PLATFORM}" == help ]; 
+if [ "${PLATFORM}" == help ] || [ "${PLATFORM}" == --help ] ; 
 then
-  echo_fail "Usage cordova-test <platform> <appium_tests_relative_path> [--no-compile] [--sauce <user> <access_key>]"
-  exit 0
+  echo "Usage cordova-test <platform> <appium_tests_relative_path> [--no-compile] [--sauce <user> <access_key>]"
+  exit 1
 fi
 
 # check tests directory exists
