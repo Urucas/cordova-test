@@ -85,7 +85,7 @@ echo "Getting compiled application path"
 PLATFORMS_PATH=$"$PWD/platforms/$PLATFORM"
 if [ ${PLATFORM} = android ];
 then
-  APP_PATH=$"$PLATFORMS_PATH/ant-build/CordovaApp-debug-unaligned.apk"
+  APP_PATH=$"$PLATFORMS_PATH/ant-build/CordovaApp-debug.apk"
 fi
 
 # Check compiled application exists
