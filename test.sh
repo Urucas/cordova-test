@@ -47,6 +47,41 @@ if [ $IS_SUPPORTED -eq 0 ]; then
 fi
 echo_ok "Checking selected platform is supported"
 
+# compile cordova app
+NO_COMPILE=1
+for i in "$@"
+do
+  if [ $i = '--no-compile' ];
+  then
+    NO_COMPILE=0
+    break
+  fi
+done
+
+if [ $NO_COMPILE -eq 1 ];
+then
+  echo "Compiling cordova application, this may take a while!"
+  COMPILE=$(cordova build $PLATFORM)
+  echo_ok "Cordova app compiled"
+fi
+
+# getting platform app path
+echo "Getting compiled application path"
+PLATFORMS_PATH=$"$PWD/platforms/$PLATFORM"
+if [ ${PLATFORM} = android ];
+then
+  APP_PATH=$"$PLATFORMS_PATH/ant-build/CordovaApp-debug-unaligned.apk"
+fi
+
+# Check compiled application exists
+if [ ! -f $APP_PATH ];
+then
+  echo_fail "Compiled application not found; $APP_PATH"
+  exit 1
+fi
+echo_ok "Checking compiled application exists"
+
+
 # check appum is running
 IS_LOCAL=1
 for i in "$@"
@@ -99,41 +134,15 @@ else
   
   SAUCE_CAPS="$TEST_PATH/sauce.json"
   echo -e "{\"host\":\"ondemand.saucelabs.com\",\"port\":\"80\",\"username\":\""$SAUCE_USER"\",\"accessKey\":\""$SAUCE_KEY"\"}" > "$SAUCE_CAPS"
-fi
 
-# compile cordova app
-NO_COMPILE=1
-for i in "$@"
-do
-  if [ $i = '--no-compile' ];
-  then
-    NO_COMPILE=0
-    break
-  fi
-done
+  #upload temp APK to sauce labs
+  echo "Uploading $PLATFORM app to sauce labs"
+  APP_NAME="${APP_PATH##*/}"
+  UPLOAD=$(curl -u $SAUCE_USER:$SAUCE_KEY -X POST -H "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/$SAUCE_USER/$APP_NAME?overwrite=true --data-binary $APP_PATH)
 
-if [ $NO_COMPILE -eq 1 ];
-then
-  echo "Compiling cordova application, this may take a while!"
-  COMPILE=$(cordova build $PLATFORM)
-  echo_ok "Cordova app compiled"
+  APP_PATH=$"sauce-storage:$APP_NAME"
+  echo_ok "App uploaded to Sauce Labs storage"
 fi
-
-# getting platform app path
-echo "Getting compiled application path"
-PLATFORMS_PATH=$"$PWD/platforms/$PLATFORM"
-if [ ${PLATFORM} = android ];
-then
-  APP_PATH=$"$PLATFORMS_PATH/ant-build/CordovaApp-debug-unaligned.apk"
-fi
-
-# Check compiled application exists
-if [ ! -f $APP_PATH ];
-then
-  echo_fail "Compiled application not found; $APP_PATH"
-  exit 1
-fi
-echo_ok "Checking compiled application exists"
 
 # create platform capabilities
 CAPS_PATH="$TEST_PATH/$PLATFORM.json"
@@ -144,6 +153,8 @@ then
     echo -e "{\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\"}" > "$CAPS_PATH"
   fi
   echo_ok "Creating $PLATFORM capabilities for the first time"
+else
+  echo "TODO - rewrite capabilities app value only"
 fi
 
 WD="--local"
