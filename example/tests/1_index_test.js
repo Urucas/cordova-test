@@ -9,7 +9,6 @@ var caps = require('./'+argv.platform+'.json');
 var wdLocal = require('./local.json');
 var wdSauce = require('./sauce.json');
 var wdCaps = argv.local ? wdLocal : wdSauce;
-console.log(wdCaps);
 
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
