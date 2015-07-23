@@ -6,14 +6,12 @@ var wd = require('wd');
 var argv = require('minimist')(process.argv.slice(2));
 var caps = require('./'+argv.platform+'.json');
 
-var wdLocal = require('./local.json');
-var wdSauce = require('./sauce.json');
-var wdCaps = argv.local ? wdLocal : wdSauce;
+var wdCaps = require(argv.local ? './local.json' : './sauce.json');
 
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 describe('Test example tests', function() {
-  this.timeout(45000);
+  this.timeout(0);
 
   describe("Checking all elements are displayed", function() {
     var browser;
