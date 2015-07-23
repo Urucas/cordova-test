@@ -2,7 +2,7 @@
 
 echo_fail()
 {
-  echo -e "\033[31m${1}";
+  echo -e "\033[31m˟ \033[0m${1}";
 }
 
 echo_ok()
@@ -16,7 +16,7 @@ PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 # help
 if [ "${PLATFORM}" == help ]; 
 then
-  echo_fail "Usage cordova-test [platform] [appium_tests_full_path]"
+  echo_fail "Usage cordova-test <platform> <appium_tests_relative_path> [--no-compile] [--sauce <user> <access_key>]"
   exit 0
 fi
 
@@ -48,13 +48,58 @@ fi
 echo_ok "Checking selected platform is supported"
 
 # check appum is running
-IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
-if [ -z $IS_RUNNING ];
+IS_LOCAL=1
+for i in "$@"
+do
+  if [ $i = '--sauce' ];
+  then
+    IS_LOCAL=0
+  fi
+done
+
+if [ $IS_LOCAL -eq 1 ];
 then
-  echo_fail "Appium is not running or available, run appium &"
-  exit 0;
+  IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
+  if [ -z $IS_RUNNING ];
+  then
+    echo_fail "Appium is not running or available, run appium &"
+    exit 0;
+  fi
+  echo_ok "Checking appium is running"
+
+  #check local web driver capabilities
+  LOCAL_WD="$TEST_PATH/local.json"
+
+  if [ ! -f $LOCAL_WD ];
+  then
+    echo '{"host":"localhost", "port":"4723"}' > "$LOCAL_WD"
+    echo_ok "Creating local weddriver capabilities for the first time"
+  fi
+else
+  #check sauce labs params and create web driver capabilities
+  for((i=1 ; i<= $#;i++))
+  do
+    PARAM=${@:i:1}
+    if [ $PARAM = '--sauce' ];
+    then
+      break
+    fi
+  done
+  SAUCE_USER=${@:i+1:1}
+  if [ -z $SAUCE_USER ];
+  then
+    echo_fail "Sauce user not defined"
+  fi
+  
+  SAUCE_KEY=${@:i+2:1}
+  if [ -z $SAUCE_KEY ];
+  then
+    echo_fail "Sauce key not defined"
+  fi
+  
+  SAUCE_CAPS="$TEST_PATH/sauce.json"
+  echo -e "{\"host\":\"ondemand.saucelabs.com\",\"port\":\"80\",\"username\":\""$SAUCE_USER"\",\"accessKey\":\""$SAUCE_KEY"\"}" > "$SAUCE_CAPS"
 fi
-echo_ok "Checking appium is running"
 
 # compile cordova app
 NO_COMPILE=1
@@ -90,9 +135,26 @@ then
 fi
 echo_ok "Checking compiled application exists"
 
+# create platform capabilities
+CAPS_PATH="$TEST_PATH/$PLATFORM.json"
+if [ ! -f $CAPS_PATH ];
+then
+  if [ $PLATFORM = 'android' ];
+  then
+    echo -e "{\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\"}" > "$CAPS_PATH"
+  fi
+  echo_ok "Creating $PLATFORM capabilities for the first time"
+fi
+
+WD="--local"
+if [ $IS_LOCAL -eq 0 ];
+then
+  WD="--sauce"
+fi
+
 # Run test sequentially
 for entry in "$TEST_PATH"/*.js
 do
   echo "Running $entry test"
-  mocha $entry --platform $PLATFORM
+  mocha $entry --platform $PLATFORM $WD
 done
