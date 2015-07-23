@@ -9,7 +9,7 @@ npm install -g cordova-test
 #Usage
 Inside your cordova application folder
 ```bash
-cordova-test <platform> <relative_path_to_appium_tests> [--no-compile]
+cordova-test <platform> <relative_path_to_tests_dir_or_file> [--no-compile] [--sauce user accessKey]
 ```
 
 #Example
@@ -24,6 +24,9 @@ Now, in the cordova project folder we run ```cordova-test android tests/``` and 
 
 
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen.png">
+
+#Integrate with Sauce Labs
+
 
 #Requirements
 * [appium](https://github.com/appium/appium)
