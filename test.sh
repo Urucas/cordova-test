@@ -35,6 +35,15 @@ else
   TESTS_PATH=$TEST_PATH
 fi
 
+# read Cordova config.xml
+CONFIG_PATH="$PWD/config.xml"
+if [ ! -f "$CONFIG_PATH" ];
+then
+  echo_fail "Error loading cordova config.xml, $CONFIG_PATH"
+  exit 1
+fi
+PACKAGE_ID=$(grep -o "id=\"[A-Za-z0-9\.\-\_]*\"" $CONFIG_PATH | sed  's/id=//g' | sed 's/\"//g')
+
 #check platforms
 SUPPORTED_PLATFORM[0]=android
 # SUPPORTED_PLATFORM[1]=ios
@@ -157,13 +166,14 @@ if [ ! -f $CAPS_PATH ];
 then
   if [ $PLATFORM = 'android' ];
   then
-    echo -e "{\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\"}" > "$CAPS_PATH"
+    echo -e "{\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\",\"app-package\":\"$PACKAGE_ID\"}" > "$CAPS_PATH"
   fi
   echo_ok "Creating $PLATFORM capabilities for the first time"
 else
   if [ $PLATFORM = 'android' ];
   then
-    REPLACE=$(sed -e 's|"app":".*"|"app":"'$APP_PATH'"|g' $CAPS_PATH)
+    REPLACE=$(sed -e 's|"app":"[\:A-Z\/a-z\.0-9\-]*"|"app":"'$APP_PATH'"|g' $CAPS_PATH)
+    echo $REPLACE
     echo_ok "$PLATFORM platform capabilities app value updated"
     echo -e $REPLACE > "$CAPS_PATH"
   fi
