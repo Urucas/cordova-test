@@ -6,6 +6,10 @@ var wd = require('wd');
 var argv = require('minimist')(process.argv.slice(2));
 var caps = require('./'+argv.platform+'.json');
 
+var wdLocal = require('./local.json');
+var wdSauce = require('./sauce.json');
+var wdCaps = argv.local ? wdLocal : wdSauce;
+
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 describe('Test example tests', function() {
@@ -15,7 +19,7 @@ describe('Test example tests', function() {
     var browser;
     
     before(function() {
-      browser = wd.promiseChainRemote("localhost", 4723);
+      browser = wd.promiseChainRemote(wdCaps);
       return browser
         .init(caps);
     });
