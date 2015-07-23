@@ -166,7 +166,7 @@ if [ ! -f $CAPS_PATH ];
 then
   if [ $PLATFORM = 'android' ];
   then
-    echo -e "{\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\",\"app-package\":\"$PACKAGE_ID\"}" > "$CAPS_PATH"
+    echo -e "{\"appium-version\":\"1.3.6\",\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\",\"app-package\":\"$PACKAGE_ID\"}" > "$CAPS_PATH"
   fi
   echo_ok "Creating $PLATFORM capabilities for the first time"
 else
