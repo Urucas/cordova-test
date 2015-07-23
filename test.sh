@@ -20,14 +20,20 @@ then
   exit 1
 fi
 
-# check tests directory exists
+# check tests path exists
 TEST_PATH=$"${PWD}/$2"
-if [ ! -d "$TEST_PATH" ];
+if [ ! -d "$TEST_PATH" ] && [ ! -f "$TEST_PATH" ];
 then
-  echo_fail "Tests directory not found; $TEST_PATH"
+  echo_fail "Tests path not found; $TEST_PATH"
   exit 1
 fi
-echo_ok "Checking tests directory exists"
+echo_ok "Checking test path exists"
+if [ -f "$TEST_PATH" ];
+then
+  TESTS_PATH=$(dirname "${TEST_PATH}")
+else
+  TESTS_PATH=$TEST_PATH
+fi
 
 #check platforms
 SUPPORTED_PLATFORM[0]=android
@@ -103,7 +109,7 @@ then
   echo_ok "Checking appium is running"
 
   #check local web driver capabilities
-  LOCAL_WD="$TEST_PATH/local.json"
+  LOCAL_WD="$TESTS_PATH/local.json"
 
   if [ ! -f $LOCAL_WD ];
   then
@@ -132,7 +138,7 @@ else
     echo_fail "Sauce key not defined"
   fi
   
-  SAUCE_CAPS="$TEST_PATH/sauce.json"
+  SAUCE_CAPS="$TESTS_PATH/sauce.json"
   echo -e "{\"host\":\"ondemand.saucelabs.com\",\"port\":\"80\",\"username\":\""$SAUCE_USER"\",\"accessKey\":\""$SAUCE_KEY"\"}" > "$SAUCE_CAPS"
 
   #upload temp APK to sauce labs
@@ -145,7 +151,7 @@ else
 fi
 
 # create platform capabilities
-CAPS_PATH="$TEST_PATH/$PLATFORM.json"
+CAPS_PATH="$TESTS_PATH/$PLATFORM.json"
 if [ ! -f $CAPS_PATH ];
 then
   if [ $PLATFORM = 'android' ];
@@ -169,8 +175,13 @@ then
 fi
 
 # Run test sequentially
-for entry in "$TEST_PATH"/*.js
-do
-  echo "Running $entry test"
-  mocha $entry --platform $PLATFORM $WD
-done
+if [ -f "$TEST_PATH" ];
+then
+  mocha $TEST_PATH --platform $PLATFORM $WD
+else
+  for entry in "$TESTS_PATH"/*.js
+  do
+    echo "Running $entry test"
+    mocha $entry --platform $PLATFORM $WD
+  done
+fi
