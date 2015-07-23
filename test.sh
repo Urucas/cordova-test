@@ -113,7 +113,7 @@ then
   if [ -z $IS_RUNNING ];
   then
     echo_fail "Appium is not running or available, run appium &"
-    exit 0;
+    exit 1;
   fi
   echo_ok "Checking appium is running"
 
@@ -139,12 +139,14 @@ else
   if [ -z $SAUCE_USER ];
   then
     echo_fail "Sauce user not defined"
+    exit 1
   fi
   
   SAUCE_KEY=${@:i+2:1}
   if [ -z $SAUCE_KEY ];
   then
     echo_fail "Sauce key not defined"
+    exit 1
   fi
   
   SAUCE_CAPS="$TESTS_PATH/sauce.json"
