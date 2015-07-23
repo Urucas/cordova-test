@@ -30,3 +30,6 @@ android.json
 ios.json
 local.json
 sauce.json
+
+platforms
+hooks
