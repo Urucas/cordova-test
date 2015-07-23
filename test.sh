@@ -154,7 +154,12 @@ then
   fi
   echo_ok "Creating $PLATFORM capabilities for the first time"
 else
-  echo "TODO - rewrite capabilities app value only"
+  if [ $PLATFORM = 'android' ];
+  then
+    REPLACE=$(sed -e 's|"app":".*"|"app":"'$APP_PATH'"|g' $CAPS_PATH)
+    echo_ok "$PLATFORM platform capabilities app value updated"
+    echo -e $REPLACE > "$CAPS_PATH"
+  fi
 fi
 
 WD="--local"
