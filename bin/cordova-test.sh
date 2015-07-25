@@ -3,11 +3,18 @@
 echo_fail()
 {
   echo -e "\033[31m✗ \033[0m${1}";
+  exit 1
 }
 
 echo_ok()
 {
   echo -e "\033[32m✓ \033[0m${1}";
+}
+
+echo_help()
+{
+  echo "Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>]"
+  exit 1
 }
 
 __DIRNAME=$(dirname $0);
@@ -18,35 +25,8 @@ PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 # help
 if [ "${PLATFORM}" == help ] || [ "${PLATFORM}" == --help ] ; 
 then
-  echo "Usage cordova-test <platform> <appium_tests_relative_path> [--no-compile] [--sauce <user> <access_key>]"
-  exit 1
+  echo_help
 fi
-
-# check tests path exists
-TEST_PATH=$"${PWD}/$2"
-if [ ! -d "$TEST_PATH" ] && [ ! -f "$TEST_PATH" ];
-then
-  echo_fail "Tests path not found; $TEST_PATH"
-  exit 1
-fi
-echo_ok "Checking test path exists"
-
-if [ -f "$TEST_PATH" ];
-then
-  TESTS_PATH=$(dirname "${TEST_PATH}")
-else
-  TESTS_PATH=$TEST_PATH
-fi
-
-# read Cordova config.xml & get info
-CONFIG_PATH="$PWD/config.xml"
-if [ ! -f "$CONFIG_PATH" ];
-then
-  echo_fail "Error loading cordova config.xml, $CONFIG_PATH"
-  exit 1
-fi
-PACKAGE_ID=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH id)
-APP_NAME=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH name)
 
 #check platforms
 SUPPORTED_PLATFORM[0]=android
@@ -62,9 +42,32 @@ done
 
 if [ $IS_SUPPORTED -eq 0 ]; then
   echo_fail "Platform not supported; $PLATFORM"
-  exit 1
 fi
 echo_ok "Checking selected platform is supported"
+
+# check tests path exists
+TEST_PATH=$"${PWD}/$2"
+if [ ! -d "$TEST_PATH" ] && [ ! -f "$TEST_PATH" ];
+then
+  echo_fail "Tests path not found; $TEST_PATH"
+fi
+echo_ok "Checking test(s) path exists"
+
+if [ -f "$TEST_PATH" ];
+then
+  TESTS_PATH=$(dirname "${TEST_PATH}")
+else
+  TESTS_PATH=$TEST_PATH
+fi
+
+# read Cordova config.xml & get info
+CONFIG_PATH="$PWD/config.xml"
+if [ ! -f "$CONFIG_PATH" ];
+then
+  echo_fail "Error loading cordova config.xml, $CONFIG_PATH"
+fi
+PACKAGE_ID=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH id)
+APP_NAME=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH name)
 
 # compile cordova app
 NO_COMPILE=1
@@ -79,6 +82,14 @@ done
 
 if [ $NO_COMPILE -eq 1 ];
 then
+  # checking cordova is installed
+  echo "Checking cordova cli is installed"
+  CDV_VERSION=$(cordova -v)
+  if [ -z $CDV_VERSION ];
+  then
+    echo_fail "Cant compile appliction, cordova cli not installed"
+  fi
+  echo_ok "Cordova installed, cordova version: $CDV_VERSION"
   echo "Compiling cordova application, this may take a while!"
   COMPILE=$(cordova build $PLATFORM)
   echo_ok "Cordova app compiled"
@@ -103,7 +114,6 @@ fi
 if [ ! -f $APP_PATH ] && [ ! -d $APP_PATH ];
 then
   echo_fail "Compiled application not found; $APP_PATH"
-  exit 1
 fi
 echo_ok "Checking compiled application exists"
 
@@ -119,18 +129,25 @@ done
 
 if [ $IS_LOCAL -eq 1 ];
 then
-  # check appum is running
+  # check appium is installed 
+  echo "Checking appium is installed"
+  APPIUM_VERSION=$(appium -v)
+  if [ -z APPIUM_VERSION ];
+  then
+    echo_fail "Appium is not installed"
+  fi
+  echo_ok "Appium installed, appium version: $APPIUM_VERSION"
+
+  # check appum is running and available
   IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
   if [ -z $IS_RUNNING ];
   then
     echo_fail "Appium is not running or available, run appium &"
-    exit 1;
   fi
   echo_ok "Checking appium is running"
 
   #check local web driver capabilities
   LOCAL_WD="$TESTS_PATH/local.json"
-
   if [ ! -f $LOCAL_WD ];
   then
     echo '{"host":"localhost", "port":"4723"}' > "$LOCAL_WD"
@@ -151,14 +168,12 @@ else
   if [ -z $SAUCE_USER ];
   then
     echo_fail "Sauce user not defined"
-    exit 1
   fi
   
   SAUCE_KEY=${@:i+2:1}
   if [ -z $SAUCE_KEY ];
   then
     echo_fail "Sauce key not defined"
-    exit 1
   fi
   
   SAUCE_CAPS="$TESTS_PATH/sauce.json"
@@ -209,7 +224,7 @@ fi
 run_test() {
   echo "Running test:"
   echo "  mocha $1 --platform $2 $3"
-  ./node_modules/mocha/bin/mocha $1 --platform $2 $3
+  $__DIRNAME/../node_modules/mocha/bin/mocha $1 --platform $2 $3
 }
 
 # Run test sequentially

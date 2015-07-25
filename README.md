@@ -39,4 +39,7 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 #Requirements
 * [cordova](https://cordova.apache.org/)
 * [appium](https://github.com/appium/appium)
-* [mocha](https://github.com/mochajs/mocha)
+
+**iOS**
+* xcode command-line toolds
+* [libimobiledevice](libimobiledevice)
