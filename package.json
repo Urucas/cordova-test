@@ -24,12 +24,13 @@
     "url": "https://github.com/Urucas/cordova-test/issues"
   },
   "homepage": "https://github.com/Urucas/cordova-test",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
-    "mocha": "^2.2.5",
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
-    "minimist": "^1.1.1"
+    "colors": "^1.1.2",
+    "minimist": "^1.1.1",
+    "mocha": "^2.2.5",
+    "xml2js": "^0.4.9"
   }
 }
