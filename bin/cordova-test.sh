@@ -10,6 +10,8 @@ echo_ok()
   echo -e "\033[32m✓ \033[0m${1}";
 }
 
+__DIRNAME=$(dirname $0);
+
 PLATFORM=$1
 PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
 
@@ -28,6 +30,7 @@ then
   exit 1
 fi
 echo_ok "Checking test path exists"
+
 if [ -f "$TEST_PATH" ];
 then
   TESTS_PATH=$(dirname "${TEST_PATH}")
@@ -35,15 +38,15 @@ else
   TESTS_PATH=$TEST_PATH
 fi
 
-# read Cordova config.xml
+# read Cordova config.xml & get info
 CONFIG_PATH="$PWD/config.xml"
 if [ ! -f "$CONFIG_PATH" ];
 then
   echo_fail "Error loading cordova config.xml, $CONFIG_PATH"
   exit 1
 fi
-PACKAGE_ID=$(grep -o "id=\"[A-Za-z0-9\.\-\_]*\"" $CONFIG_PATH | sed  's/id=//g' | sed 's/\"//g')
-APP_NAME=$(grep -o "<name>[A-Za-z0-9\.\-\_]*</name>" $CONFIG_PATH | sed 's/<name>//g' | sed 's/<\/name>//g')
+PACKAGE_ID=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH id)
+APP_NAME=$($__DIRNAME/../lib/config_parser.js $CONFIG_PATH name)
 
 #check platforms
 SUPPORTED_PLATFORM[0]=android

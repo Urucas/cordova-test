@@ -1,1 +1,0 @@
-../bin/cordova-test.sh
