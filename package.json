@@ -1,6 +1,6 @@
 {
   "name": "cordova-test",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "command-line tool to automate Cordova Appium tests suite",
   "preferGlobal": true,
   "bin": {
