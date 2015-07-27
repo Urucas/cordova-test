@@ -84,11 +84,12 @@ if [ $NO_COMPILE -eq 1 ];
 then
   # checking cordova is installed
   echo "Checking cordova cli is installed"
-  CDV_VERSION=$(cordova -v)
-  if [ -z $CDV_VERSION ];
+  CDV_EXISTS=$(which cordova)
+  if [ -z $CDV_EXISTS ];
   then
     echo_fail "Cant compile appliction, cordova cli not installed"
   fi
+  CDV_VERSION=$(cordova -v)
   echo_ok "Cordova installed, cordova version: $CDV_VERSION"
   echo "Compiling cordova application, this may take a while!"
   COMPILE=$(cordova build $PLATFORM)
@@ -131,11 +132,12 @@ if [ $IS_LOCAL -eq 1 ];
 then
   # check appium is installed 
   echo "Checking appium is installed"
-  APPIUM_VERSION=$(appium -v)
-  if [ -z APPIUM_VERSION ];
+  APPIUM_EXISTS=$(which appium)
+  if [ -z $APPIUM_EXISTS ];
   then
     echo_fail "Appium is not installed"
   fi
+  APPIUM_VERSION=$(appium -v)
   echo_ok "Appium installed, appium version: $APPIUM_VERSION"
 
   # check appum is running and available
@@ -150,7 +152,8 @@ then
   LOCAL_WD="$TESTS_PATH/local.json"
   if [ ! -f $LOCAL_WD ];
   then
-    echo '{"host":"localhost", "port":"4723"}' > "$LOCAL_WD"
+    LOCAL_CAPS=$($__DIRNAME/../lib/capabilities_parser.js local)
+    echo -e $LOCAL_CAPS > "$LOCAL_WD"
     echo_ok "Creating local wed driver capabilities for the first time"
   fi
 
@@ -176,10 +179,11 @@ else
     echo_fail "Sauce key not defined"
   fi
   
-  SAUCE_CAPS="$TESTS_PATH/sauce.json"
-  echo -e "{\"host\":\"ondemand.saucelabs.com\",\"port\":\"80\",\"username\":\""$SAUCE_USER"\",\"accessKey\":\""$SAUCE_KEY"\"}" > "$SAUCE_CAPS"
+  SAUCE_CAPS_PATH="$TESTS_PATH/sauce.json"
+  SAUCE_CAPS=$($__DIRNAME/../lib/capabilities_parser.js sauce $SAUCE_USER $SAUCE_KEY)
+  echo -e $SAUCE_CAPS > "$SAUCE_CAPS_PATH"
   echo_ok "Creating sauce labs web driver capabilities"
-
+  
   #upload temp APK to sauce labs
   echo "Uploading $PLATFORM app to sauce labs"
   APP_NAME="${APP_PATH##*/}"
@@ -191,29 +195,27 @@ fi
 
 # create platform capabilities
 CAPS_PATH="$TESTS_PATH/$PLATFORM.json"
-if [ ! -f $CAPS_PATH ];
+if [ $PLATFORM = 'android' ];
 then
-  if [ $PLATFORM = 'android' ];
-  then
-    echo -e "{\"appium-version\":\"1.4.7\",\"deviceName\":\"Android\",\"platformName\":\"Android\",\"platformVersion\":\"5.0\",\"app\":\""$APP_PATH"\",\"app-package\":\"$PACKAGE_ID\"}" > "$CAPS_PATH"
-  fi
-  if [ $PLATFORM = 'ios' ];
-  then
-    # get connected iphone udid
-    if [ $IS_LOCAL -eq 1 ];
-    then
-      UDID=$(idevice_id -l)
-      echo -e "{\"appium-version\":\"1.4.7\",\"deviceName\":\"ios\",\"udid\":\""$UDID"\", \"platformName\":\"iOS\",\"platformVersion\":\"8.3\",\"app\":\""$APP_PATH"\",\"app-package\":\""$PACKAGE_ID"\",\"browserName\":\"\"}" > "$CAPS_PATH"
-    else
-      echo -e "{\"appium-version\":\"1.4.7\",\"deviceName\":\"iPhone Simulator\",\"platformName\":\"iOS\",\"platformVersion\":\"8.2\",\"app\":\""$APP_PATH"\",\"app-package\":\""$PACKAGE_ID"\",\"browserName\":\"\"}" > "$CAPS_PATH"
-    fi
-  fi
-  echo_ok "Creating $PLATFORM capabilities for the first time"
-else
-  REPLACE=$(sed -e 's|"app":"[\:A-Z\/a-z\.0-9\-]*"|"app":"'$APP_PATH'"|g' $CAPS_PATH)
-  echo_ok "$PLATFORM platform capabilities app value updated"
-  echo -e $REPLACE > "$CAPS_PATH"
+  CAPS=$($__DIRNAME/../lib/capabilities_parser.js android $CAPS_PATH $APP_PATH $PACKAGE_ID)
+  echo -e $CAPS > "$CAPS_PATH"
 fi
+
+if [ $PLATFORM = 'ios' ];
+then
+  # get connected iphone udid
+  if [ $IS_LOCAL -eq 1 ];
+  then
+    UDID=$(idevice_id -l)
+    CAPS=$($__DIRNAME/../lib/capabilities_parser.js ios $CAPS_PATH $APP_PATH $PACKAGE_ID $UDID)
+    echo -e $CAPS > "$CAPS_PATH"
+  else
+    CAPS=$($__DIRNAME/../lib/capabilities_parser.js ios $CAPS_PATH $APP_PATH $PACKAGE_ID)
+    echo -e $CAPS > "$CAPS_PATH"
+  fi
+fi
+
+echo_ok "$PLATFORM capabilities updated"
 
 WD="--local"
 if [ $IS_LOCAL -eq 0 ];
