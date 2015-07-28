@@ -38,7 +38,7 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 #Use Tape
 As default ```cordova-test``` cli will run every tests with [mocha](http://mochajs.org/), but it can also be integrated to run with [tape](https://github.com/substack/tape) by setting the ```--use-tape``` param.
 
-```cordova-test android tests/tape```
+```cordova-test android tests/tape --use-tape```
 
 #Requirements
 * [cordova](https://cordova.apache.org/)
