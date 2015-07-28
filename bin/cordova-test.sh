@@ -13,7 +13,7 @@ echo_ok()
 
 echo_help()
 {
-  echo "Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>]"
+  echo "Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>] [--use-tape]"
   exit 1
 }
 
