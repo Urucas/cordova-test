@@ -223,19 +223,40 @@ then
   WD="--sauce"
 fi
 
-run_test() {
+run_mocha_test() {
   echo "Running test:"
   echo "  mocha $1 --platform $2 $3"
   $__DIRNAME/../node_modules/mocha/bin/mocha $1 --platform $2 $3
 }
 
+run_tape_test() {
+  echo "Running test:"
+  echo "  tape $1 --platform $2 $3"
+  $__DIRNAME/../node_modules/tape/bin/tape $1 --platform $2 $3
+}
+
+TEST_CMD=run_mocha_test
+USE_TAPE=0
+for i in "$@"
+do
+  if [ $i = '--use-tape' ];
+  then
+    USE_TAPE=1
+    break
+  fi
+done
+if [ $USE_TAPE -eq 1 ];
+then
+  TEST_CMD=run_tape_test
+fi
+
 # Run test sequentially
 if [ -f "$TEST_PATH" ];
 then
-  run_test $TEST_PATH $PLATFORM $WD
+  $TEST_CMD $TEST_PATH $PLATFORM $WD
 else
   for entry in "$TESTS_PATH"/*.js
   do
-    run_test $entry $PLATFORM $WD
+    $TEST_CMD $entry $PLATFORM $WD
   done
 fi
