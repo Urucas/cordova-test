@@ -11,7 +11,7 @@ var wdCaps = require(argv.local ? './local.json' : './sauce.json');
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 describe('Test example tests', function() {
-  this.timeout(45000);
+  this.timeout(0);
 
   describe("Checking button action", function() {
     var browser;
@@ -29,6 +29,7 @@ describe('Test example tests', function() {
     
     it("should click a button", function(done) {
       browser
+      .setImplicitWaitTimeout(5000)
       .context('WEBVIEW_com.urucas.testexample')
       .elementByClassName("hello")
       .isDisplayed()
@@ -42,6 +43,7 @@ describe('Test example tests', function() {
 
     it("should have changed home text", function(done) {
       browser
+      .setImplicitWaitTimeout(5000)
       .context('WEBVIEW_com.urucas.testexample')
       .elementByClassName("hello")
       .isDisplayed()

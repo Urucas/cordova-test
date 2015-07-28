@@ -29,6 +29,7 @@ describe('Test example tests', function() {
     
     it("should show hello world", function(done) {
       browser
+      .setImplicitWaitTimeout(5000)
       .context('WEBVIEW_com.urucas.testexample')
       .elementByClassName("hello")
       .isDisplayed()
@@ -40,6 +41,7 @@ describe('Test example tests', function() {
 
     it("should show h1", function(done) {
       browser
+      .setImplicitWaitTimeout(5000)
       .context('WEBVIEW_com.urucas.testexample')
       .elementByTagName("h1")
       .isDisplayed()
