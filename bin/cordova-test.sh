@@ -17,7 +17,30 @@ echo_help()
   exit 1
 }
 
-__DIRNAME=$(dirname $0);
+__dirname() {
+  local prog=${BASH_SOURCE[0]}
+  [[ -n $prog ]] || return 1
+
+  # resolve symlinks (of script)
+  while [[ -L $prog ]]; do
+    local rl=$(readlink "$prog")
+    # readlink(1) is not portable, so assert it exits 0
+    # and also returns non-empty string
+    if (($? != 0)) || [[ -z $rl ]]; then
+      return 1
+    fi
+    # symlinks can be relative, in which case make them
+    # "relative" to the original program dirname
+    if [[ ${rl:0:1} == '/' ]]; then
+      prog=$rl
+    else
+      prog=$(dirname "$prog")/$rl
+    fi
+  done
+  # reslove the dir
+  (CDPATH= cd "$(dirname "$prog")" && pwd)
+}
+__DIRNAME=$(__dirname)
 
 PLATFORM=$1
 PLATFORM=$(echo $PLATFORM | awk '{print tolower($0)}')
