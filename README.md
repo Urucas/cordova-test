@@ -40,6 +40,8 @@ As default ```cordova-test``` cli will run every tests with [mocha](http://mocha
 
 ```cordova-test android tests/tape --use-tape```
 
+<img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen-tape.png">
+
 #Requirements
 * [cordova](https://cordova.apache.org/)
 * [appium](https://github.com/appium/appium)
