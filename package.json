@@ -1,6 +1,6 @@
 {
   "name": "cordova-test",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "command-line tool to automate Cordova Appium tests suite",
   "preferGlobal": true,
   "bin": {
@@ -19,7 +19,9 @@
     "selenium",
     "android",
     "ios",
-    "sauce labs"
+    "sauce labs",
+    "mocha",
+    "tape"
   ],
   "author": "Urucas <hello@urucas.com>",
   "license": "MIT",
