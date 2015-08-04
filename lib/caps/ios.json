@@ -1,0 +1,9 @@
+{
+  "appium-version" : "1.4.7",
+  "deviceName":"ios",
+  "platformName":"iOS",
+  "platformVersion":"8.2",
+  "app":"",
+  "app-package":"",
+  "browserName":""
+}
