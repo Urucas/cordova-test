@@ -224,7 +224,7 @@ elif [ $WD_ENV = 'sauce' ];
   #upload temp APK to sauce labs
   echo "Uploading $PLATFORM app to sauce labs"
   APP_NAME="${APP_PATH##*/}"
-  UPLOAD=$(curl -u $SAUCE_USER:$SAUCE_KEY -X POST -H "Content-Type: application/octet-stream" https://saucelabs.com/rest/v1/storage/$SAUCE_USER/$APP_NAME?overwrite=true --data-binary @$APP_PATH)
+  UPLOAD=$(curl -u $SAUCE_USER:$SAUCE_KEY -X POST -H "Content-Type: application/octet-stream" "https://saucelabs.com/rest/v1/storage/$SAUCE_USER/$APP_NAME?overwrite=true --data-binary @$APP_PATH)
 
   APP_PATH=$"sauce-storage:$APP_NAME"
   echo_ok "App uploaded to Sauce Labs storage"
