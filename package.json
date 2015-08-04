@@ -4,7 +4,7 @@
   "description": "command-line tool to automate Cordova Appium tests suite",
   "preferGlobal": true,
   "bin": {
-    "cordova-test": "./bin/cordova-test.sh"
+    "cordova-test": "./bin/cli"
   },
   "scripts": {
     "build": "make clean && make node",
