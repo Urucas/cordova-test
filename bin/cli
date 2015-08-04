@@ -9,7 +9,7 @@ var parser = require('../node/paramsParser.js')
 var settings = parser(process.argv.slice(2))
 
   logger.ok("Parsing cli params")
-  console.log("cordova-test params,\n"+JSON.stringify(settings)+"\n")
+  logger.echo(JSON.stringify(settings)+"\n")
   
   settings.logger = logger
 
@@ -27,3 +27,4 @@ if(err) {
   logger.fail(err.toString())
   process.exit(0)
 }
+CDVTest.run()

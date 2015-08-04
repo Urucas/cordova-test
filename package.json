@@ -43,6 +43,7 @@
     "chai-as-promised": "^5.1.0",
     "colors": "^1.1.2",
     "cordova-lib": "^5.1.1",
+    "glue-path": "0.0.2",
     "minimist": "^1.1.1",
     "mocha": "^2.2.5",
     "obj-push": "0.0.2",
