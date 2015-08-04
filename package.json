@@ -6,6 +6,10 @@
   "bin": {
     "cordova-test": "./bin/cordova-test.sh"
   },
+  "scripts": {
+    "prestart": "make clean && make node",
+    "start": "./bin/cli"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Urucas/cordova-test.git"
@@ -29,13 +33,18 @@
     "url": "https://github.com/Urucas/cordova-test/issues"
   },
   "homepage": "https://github.com/Urucas/cordova-test",
-  "devDependencies": {},
+  "devDependencies": {
+    "babel": "^5.8.20"
+  },
   "dependencies": {
+    "appium-running": "^0.1.3",
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
     "colors": "^1.1.2",
+    "cordova-lib": "^5.1.1",
     "minimist": "^1.1.1",
     "mocha": "^2.2.5",
+    "obj-push": "0.0.2",
     "tape": "^4.0.1",
     "xml2js": "^0.4.9"
   }

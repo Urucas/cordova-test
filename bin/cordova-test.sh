@@ -13,7 +13,7 @@ echo_ok()
 
 echo_help()
 {
-  echo "Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>] [--use-tape]"
+  echo "Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>] [--testdroid <username> <password> <device_name>] [--use-tape]"
   exit 1
 }
 
@@ -40,6 +40,7 @@ __dirname() {
   # reslove the dir
   (CDPATH= cd "$(dirname "$prog")" && pwd)
 }
+
 __DIRNAME=$(__dirname)
 
 PLATFORM=$1
@@ -142,45 +143,58 @@ fi
 echo_ok "Checking compiled application exists"
 
 # check if tests will run local or in sauce labs
-IS_LOCAL=1
+WD_ENV='local'
 for i in "$@"
 do
   if [ $i = '--sauce' ];
   then
-    IS_LOCAL=0
+    WD_ENV='sauce'
+    break
+  elif [ $i = '--testdroid' ];
+  then
+    WD_ENV='testdroid'
+    break
   fi
 done
 
-if [ $IS_LOCAL -eq 1 ];
+if [ $WD_ENV = 'testdroid' ];
 then
-  # check appium is installed 
-  echo "Checking appium is installed"
-  APPIUM_EXISTS=$(which appium)
-  if [ -z $APPIUM_EXISTS ];
+  # test on testdroid
+  for((i=1 ; i<= $#;i++))
+  do
+    PARAM=${@:i:1}
+    if [ $PARAM = '--testdroid' ];
+    then
+      break
+    fi
+  done
+  
+  TESTDROID_USERNAME=${@:i+1:1}
+  if [ -z $TESTDROID_USERNAME ];
   then
-    echo_fail "Appium is not installed"
-  fi
-  APPIUM_VERSION=$(appium -v)
-  echo_ok "Appium installed, appium version: $APPIUM_VERSION"
-
-  # check appum is running and available
-  IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
-  if [ -z $IS_RUNNING ];
-  then
-    echo_fail "Appium is not running or available, run appium &"
-  fi
-  echo_ok "Checking appium is running"
-
-  #check local web driver capabilities
-  LOCAL_WD="$TESTS_PATH/local.json"
-  if [ ! -f $LOCAL_WD ];
-  then
-    LOCAL_CAPS=$($__DIRNAME/../lib/capabilities_parser.js local)
-    echo -e $LOCAL_CAPS > "$LOCAL_WD"
-    echo_ok "Creating local wed driver capabilities for the first time"
+    echo_fail "Testdroid username not defined"
   fi
 
-else
+  TESTDROID_PASSWORD=${@:i+2:1}
+  if [ -z $TESTDROID_PASSWORD ];
+  then
+    echo_fail "Testdroid password not defined"
+  fi
+  
+  TESTDROID_DEVICE=${@:i+3:1}
+  if [ -z $TESTDROID_DEVICE ];
+  then
+    echo_fail "Testdroid device not defined"
+  fi
+   
+  TESDROID_CAPS_PATH="$TESTS_PATH/testdroid.json"
+  TESTDROID_CAPS=$($__DIRNAME/../lib/capabilities_parser.js testdroid $TESTDROID_USERNAME $TESTDROID_PASSWORD $TESTDROID_DEVICE)
+  echo -e $TESTDROID_CAPS > "$SAUCE_CAPS_PATH"
+  echo_ok "Creating sauce labs web driver capabilities"
+
+
+elif [ $WD_ENV = 'sauce' ];
+  then
   #check sauce labs params and create web driver capabilities
   for((i=1 ; i<= $#;i++))
   do
@@ -214,6 +228,35 @@ else
 
   APP_PATH=$"sauce-storage:$APP_NAME"
   echo_ok "App uploaded to Sauce Labs storage"
+
+else 
+  # local testing
+  # check appium is installed 
+  echo "Checking appium is installed"
+  APPIUM_EXISTS=$(which appium)
+  if [ -z $APPIUM_EXISTS ];
+  then
+    echo_fail "Appium is not installed"
+  fi
+  APPIUM_VERSION=$(appium -v)
+  echo_ok "Appium installed, appium version: $APPIUM_VERSION"
+
+  # check appum is running and available
+  IS_RUNNING=$(curl -v --max-time 2 --silent http://127.0.0.1:4723/wd/hub/status 2>&1 | grep \"status\":0)
+  if [ -z $IS_RUNNING ];
+  then
+    echo_fail "Appium is not running or available, run appium &"
+  fi
+  echo_ok "Checking appium is running"
+
+  #check local web driver capabilities
+  LOCAL_WD="$TESTS_PATH/local.json"
+  if [ ! -f $LOCAL_WD ];
+  then
+    LOCAL_CAPS=$($__DIRNAME/../lib/capabilities_parser.js local)
+    echo -e $LOCAL_CAPS > "$LOCAL_WD"
+    echo_ok "Creating local wed driver capabilities for the first time"
+  fi
 fi
 
 # create platform capabilities
