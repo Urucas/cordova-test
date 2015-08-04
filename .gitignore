@@ -26,10 +26,11 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-android.json
-ios.json
-local.json
-sauce.json
+example/tests/mocha/android.json
+example/tests/mocha/ios.json
+example/tests/tape/android.json
+example/tests/tape/ios.json
 
 platforms
+plugins
 hooks

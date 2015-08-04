@@ -6,8 +6,6 @@ var wd = require('wd');
 var argv = require('minimist')(process.argv.slice(2));
 var caps = require('./'+argv.platform+'.json');
 
-var wdCaps = require(argv.local ? './local.json' : './sauce.json');
-
 chaiAsPromised.transferPromiseness = wd.transferPromiseness;
 
 describe('Test example tests', function() {
@@ -17,7 +15,7 @@ describe('Test example tests', function() {
     var browser;
     
     before(function() {
-      browser = wd.promiseChainRemote(wdCaps);
+      browser = wd.promiseChainRemote(caps);
       return browser
         .init(caps);
     });
