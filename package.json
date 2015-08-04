@@ -9,6 +9,7 @@
   "scripts": {
     "build": "make clean && make node",
     "prestart": "npm run build",
+    "test": "node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s",
     "start": "./bin/cli"
   },
   "repository": {
