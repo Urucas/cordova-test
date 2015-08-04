@@ -1,6 +1,6 @@
 {
   "name": "cordova-test",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "command-line tool to automate Cordova Appium tests suite",
   "preferGlobal": true,
   "bin": {
@@ -48,8 +48,6 @@
     "glue-path": "0.0.2",
     "minimist": "^1.1.1",
     "mocha": "^2.2.5",
-    "obj-push": "0.0.2",
-    "tape": "^4.0.1",
-    "xml2js": "^0.4.9"
+    "tape": "^4.0.1"
   }
 }
