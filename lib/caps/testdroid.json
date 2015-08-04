@@ -1,9 +1,0 @@
-{
-  "host" : "appium.testdroid.com",
-  "testdroid_username" : "",
-  "testdroid_password" : "",
-  "testdroid_project" : "My Cordova Project",
-  "testdroid_testrun" : "Appium test",
-  "testdroid_device" : "Samsung Galaxy Nexus GT-I9250 4.2.2",
-  "testdroid_app" : ""
-}
