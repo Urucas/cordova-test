@@ -4,7 +4,7 @@ if(argv.indexOf("--help") != -1) {
   console.log("Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>] [--testdroid <username> <password> <device_name>] [--use-tape]")
   process.exit(0)
 }
-var logger = require('../node/cdvLogger.js')()
+var logger = require('../node/CDVLogger.js')()
 var parser = require('../node/paramsParser.js')
 var settings = parser(process.argv.slice(2))
 
@@ -15,11 +15,11 @@ var settings = parser(process.argv.slice(2))
 
 var CDVTestClass;
 if(settings.sauce) {
-  CDVTestClass = require('../node/cdvTestSauce.js');
+  CDVTestClass = require('../node/CDVTestSauce.js');
 }else if(settings.testdroid) {
-  CDVTestClass = require('../node/cdvTestTestdroid.js')
+  CDVTestClass = require('../node/CDVTestTestdroid.js')
 }else {
-  CDVTestClass = require('../node/cdvTestLocal.js')
+  CDVTestClass = require('../node/CDVTestLocal.js')
 }
 var CDVTest = new CDVTestClass(settings)
 var err = CDVTest.checkSettings()
