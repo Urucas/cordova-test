@@ -22,7 +22,7 @@ As default ```cordova-test``` will run the tests with [mocha](http://mochajs.org
 For ex.:
 ```bash
 $ cordova-test android tests/tape --env tape *.js
-$ cordova-test android tests/tape --env python *.py
+$ cordova-test android tests/python --env python *.py
 ```
 
 #Example
