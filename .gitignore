@@ -26,12 +26,12 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-example/tests/mocha/android.json
-example/tests/mocha/ios.json
-example/tests/tape/android.json
-example/tests/tape/ios.json
+example/tests/mocha/*.json
+example/tests/tape/*.json
+example/tests/python/*.json
 example/package.json
 
+.ropeproject
 platforms
 plugins
 hooks
