@@ -36,7 +36,8 @@
   },
   "homepage": "https://github.com/Urucas/cordova-test",
   "devDependencies": {
-    "babel": "^5.8.20"
+    "babel": "^5.8.20",
+    "mocha": "^2.2.5"
   },
   "dependencies": {
     "appium-running": "^0.1.3",
