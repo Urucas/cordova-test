@@ -51,17 +51,21 @@ describe("paramsParser tests", () => {
     done();
   });
   
-  it("should set use_tape as false as default", (done) => {
+  it("should set mocha as default test environment", (done) => {
     let settings = parser(['android'])
-    if(settings["use_tape"] == true)
-      throw new Error("Error setting default use_tape as false")
+    if(settings["env"] != "mocha")
+      throw new Error("Error setting default env as mocha")
+    if(settings["env_files"] != "*.js")
+      throw new Error("Error setting default env_files as *.js")
     done();
   });
 
-  it("should set use_tape as true", (done) => {
-    let settings = parser(['android',,,"--use-tape",,,])
-    if(settings["use_tape"] == false)
-      throw new Error("Error setting use_tape as true")
+  it("should set tape as test environment", (done) => {
+    let settings = parser(['android',,"--env", "tape", "*.js"])
+    if(settings["env"] == "mocha")
+      throw new Error("Error setting env")
+    if(settings["env_files"] == undefined)
+      throw new Error("Error setting env_files")
     done();
   });
 
