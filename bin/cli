@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 var argv = process.argv.slice(2)
 if(argv.indexOf("--help") != -1) {
-  console.log("Usage cordova-test <android_or_ios> <relative_path_to_appium_tests> [--no-compile] [--sauce <user> <access_key>] [--testdroid <username> <password> <device_name>] [--use-tape]")
+  console.log([
+    "Usage; ",
+    " cordova-test <android_or_ios> <relative_path_to_appium_tests>",
+    " [--no-compile]",
+    " [--env environment files_regex]",
+    " [--sauce user access_key]",
+    " [--testdroid username password device_name]",
+    " [--udid ios_udid]",
+    ].join("\n"))
   process.exit(0)
 }
 
