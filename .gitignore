@@ -30,6 +30,7 @@ example/tests/mocha/android.json
 example/tests/mocha/ios.json
 example/tests/tape/android.json
 example/tests/tape/ios.json
+example/package.json
 
 platforms
 plugins
