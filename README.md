@@ -34,7 +34,7 @@ cordova platform add android
 ```
 and add a few elements to the [index.html](https://github.com/Urucas/cordova-test/blob/master/example/www/index.html)
 
-Now, we create 2 appium tests to run with mocha, the [first one](https://github.com/Urucas/cordova-test/blob/master/example/mocha/tests/1_index_test.js) will check that some elements on the **index.html** are displayed, and the [second test](https://github.com/Urucas/cordova-test/blob/master/example/mocha/tests/2_button_test.js) will click on a button and check a text is changed.
+Now, we create 2 appium tests to run with mocha, the [first one](https://github.com/Urucas/cordova-test/blob/master/example/tests/mocha/1_index_test.js) will check that some elements on the **index.html** are displayed, and the [second test](https://github.com/Urucas/cordova-test/blob/master/example/tests/mocha/2_button_test.js) will click on a button and check a text is changed.
 
 Inside our cordova project root folder run 
 ```cordova-test android tests/mocha``` 
