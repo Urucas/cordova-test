@@ -7,7 +7,8 @@
     "cordova-test": "./bin/cli"
   },
   "scripts": {
-    "build": "make clean && make node",
+    "clean": "rimraf dist",
+    "build": "npm run clean && babel ./lib --out-dir ./dist && mkdir ./dist/caps && cp ./lib/caps/* ./dist/caps",
     "prestart": "npm run build",
     "test": "node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s",
     "start": "./bin/cli"
@@ -30,6 +31,9 @@
     "tape"
   ],
   "author": "Urucas <hello@urucas.com>",
+  "contributors": [
+    "Chau Thai <chau.thai@mobilexag.de"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Urucas/cordova-test/issues"
@@ -37,7 +41,14 @@
   "homepage": "https://github.com/Urucas/cordova-test",
   "devDependencies": {
     "babel": "^5.8.20",
-    "mocha": "^2.2.5"
+    "babel-eslint": "^6.0.4",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-jsx-a11y": "^1.4.2",
+    "eslint-plugin-react": "^5.1.1",
+    "mocha": "^2.2.5",
+    "rimraf": "^2.5.2"
   },
   "dependencies": {
     "appium-running": "^0.1.3",
