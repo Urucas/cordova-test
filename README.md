@@ -11,7 +11,9 @@ Inside your cordova application folder
 ```bash
 cordova-test <platform> <relative_path_to_tests_dir_or_file> 
   [--no-compile]
-  [--babel use babel transpiler] 
+  [--babel use babel transpiler]
+  [--teamcity use mocha-teamcity-reporter] 
+  [--device iOS build for device/emulator]
   [--env environment files_regex]
   [--sauce user accessKey]
   [--udid ios_udid]
@@ -82,4 +84,11 @@ npm i --save-dev babel-core babel-plugin-transform-async-to-generator babel-poly
  "presets": ["react", "es2015"],
  "plugins": ["transform-async-to-generator"]
 }
+```
+
+**Team City**
+* Use the `--teamcity` flag to activate the `mocha-teamcity-reporter`. Install the dependency in the target project before using the flag:
+
+```shell
+npm i mocha-teamcity-reporter --save-dev
 ```
