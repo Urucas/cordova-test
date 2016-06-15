@@ -71,10 +71,13 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 
 **Babel**
 * To use the babel transpiler and es2015 in your tests you need to install these dependencies in your Cordova project:
-```npm i --save-dev babel-core babel-plugin-transform-async-to-generator babel-polyfill babel-preset-es2015
+
+```shell
+npm i --save-dev babel-core babel-plugin-transform-async-to-generator babel-polyfill babel-preset-es2015
 ```
+
 * .babel.rc config:
-```
+```json
 {
  "presets": ["react", "es2015"],
  "plugins": ["transform-async-to-generator"]
