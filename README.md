@@ -10,10 +10,13 @@ npm install -g cordova-test
 Inside your cordova application folder
 ```bash
 cordova-test <platform> <relative_path_to_tests_dir_or_file> 
-  [--no-compile] 
+  [--no-compile]
+  [--babel use babel transpiler] 
   [--env environment files_regex]
   [--sauce user accessKey]
   [--udid ios_udid]
+  [--device-name device name]
+  [--platform-version platform version]
 ```
 
 #Environment
