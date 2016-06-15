@@ -25,10 +25,11 @@ describe('Test example tests', function() {
         .quit();
     });
     
-    it("should click a button", function(done) {
+    it("should click a button", async function(done) {
+      const contexts = await browser.contexts();
+      await browser.context(contexts[1]);
       browser
-      .setImplicitWaitTimeout(5000)
-      .context('WEBVIEW_com.urucas.testexample')
+      .setImplicitWaitTimeout(10000)
       .elementByClassName("hello")
       .isDisplayed()
       .then(function(isDisplayed){
@@ -39,10 +40,11 @@ describe('Test example tests', function() {
       .nodeify(done);
     });
 
-    it("should have changed home text", function(done) {
+    it("should have changed home text", async function(done) {
+      const contexts = await browser.contexts();
+      await browser.context(contexts[1]);
       browser
-      .setImplicitWaitTimeout(5000)
-      .context('WEBVIEW_com.urucas.testexample')
+      .setImplicitWaitTimeout(10000)
       .elementByClassName("hello")
       .isDisplayed()
       .then(function(isDisplayed){
@@ -59,4 +61,3 @@ describe('Test example tests', function() {
   });
 
 });
-
