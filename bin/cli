@@ -13,6 +13,6 @@ if(argv.indexOf("--help") != -1) {
   process.exit(0)
 }
 
-var CDVAutomator = require('../node/CDVAutomator.js'),
+var CDVAutomator = require('../dist/CDVAutomator.js'),
     automator = new CDVAutomator(argv)
     automator.run()

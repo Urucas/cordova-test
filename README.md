@@ -10,10 +10,15 @@ npm install -g cordova-test
 Inside your cordova application folder
 ```bash
 cordova-test <platform> <relative_path_to_tests_dir_or_file> 
-  [--no-compile] 
+  [--no-compile]
+  [--babel use babel transpiler]
+  [--teamcity use mocha-teamcity-reporter] 
+  [--device iOS build for device/emulator]
   [--env environment files_regex]
   [--sauce user accessKey]
   [--udid ios_udid]
+  [--device-name device name]
+  [--platform-version platform version]
 ```
 
 #Environment
@@ -66,3 +71,24 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 **iOS**
 * xcode command-line tools
 
+**Babel**
+* To use the babel transpiler and es2015 in your tests you need to install these dependencies in your Cordova project:
+
+```shell
+npm i --save-dev babel-core babel-plugin-transform-async-to-generator babel-polyfill babel-preset-es2015
+```
+
+* .babel.rc config:
+```json
+{
+ "presets": ["react", "es2015"],
+ "plugins": ["transform-async-to-generator"]
+}
+```
+
+**Team City**
+* Use the `--teamcity` flag to activate the `mocha-teamcity-reporter`. Install the dependency in the target project before using the flag:
+
+```shell
+npm i mocha-teamcity-reporter --save-dev
+```
