@@ -11,7 +11,8 @@
     "build": "npm run clean && babel ./lib --out-dir ./dist && mkdir ./dist/caps && cp ./lib/caps/* ./dist/caps",
     "prestart": "npm run build",
     "test": "node_modules/mocha/bin/mocha --compilers js:babel/register",
-    "start": "./bin/cli"
+    "start": "./bin/cli",
+    "prepublish": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
