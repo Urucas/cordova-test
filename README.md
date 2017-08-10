@@ -1,12 +1,12 @@
 # cordova-test [![Build Status](https://travis-ci.org/Urucas/cordova-test.svg)](https://travis-ci.org/Urucas/cordova-test)
 cli-tool to automate Appium tests suite for Cordova apps
 
-#Install
+## Install
 ```bash
 npm install -g cordova-test
 ```
 
-#Usage
+## Usage
 Inside your cordova application folder
 ```bash
 cordova-test <platform> <relative_path_to_tests_dir_or_file> 
@@ -21,7 +21,7 @@ cordova-test <platform> <relative_path_to_tests_dir_or_file>
   [--platform-version platform version]
 ```
 
-#Environment
+## Environment
 As default ```cordova-test``` will run the tests with [mocha](http://mochajs.org/), but it can also be integrated to run with any other environment you want by setting the ```--env``` param.
 
 For ex.:
@@ -30,7 +30,7 @@ $ cordova-test android tests/tape --env tape *.js
 $ cordova-test android tests/python --env python *.py
 ```
 
-#Example
+## Example
 As an example we create a simple **Hello World** app with cordova,
 
 ```bash
@@ -51,7 +51,7 @@ Thats all!
 
 **cordova-test** will compile the cordova app, verify the requested environment, create the test capabilities and run all the tests. 
 
-#Integrate with Sauce Labs
+## Integrate with Sauce Labs
 Set your [Sauce Labs](https://saucelabs.com/) user and access key to run the tests suite in Sauce Labs mobile devices.
 
 For ex. 
@@ -62,7 +62,7 @@ Before running the tests, ```cordova-test``` will upload the compiled app to Sau
 
 <img src="https://raw.githubusercontent.com/Urucas/cordova-test/master/screen-sauce.png">
 
-#Requirements
+## Requirements
 * [cordova](https://cordova.apache.org/)
 
 **Local testing**
