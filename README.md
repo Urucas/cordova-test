@@ -1,4 +1,4 @@
-# cordova-test [![Build Status](https://travis-ci.org/Urucas/cordova-test.svg)](https://travis-ci.org/Urucas/cordova-test)
+# [DEPRECATED] cordova-test [![Build Status](https://travis-ci.org/Urucas/cordova-test.svg)](https://travis-ci.org/Urucas/cordova-test)
 cli-tool to automate Appium tests suite for Cordova apps
 
 ## Install
